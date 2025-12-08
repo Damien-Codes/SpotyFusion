@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import Callback from "./pages/Callback";
 
 const App: React.FC = () => {
   // Pour dev, tu peux stocker le token ici
@@ -12,6 +13,7 @@ const App: React.FC = () => {
      <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/callback" element={<Callback />} />
         <Route path="/dashboard" element={<Dashboard token={token} />} />
       </Routes>
     </BrowserRouter>

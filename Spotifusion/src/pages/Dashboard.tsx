@@ -10,10 +10,15 @@ const Dashboard: React.FC<DashboardProps> = ({ token }) => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
 
   useEffect(() => {
-    if (token) {
-      getPlaylists(token).then(setPlaylists);
-    }
-  }, [token]);
+    const token = localStorage.getItem("spotify_token");
+  if (token) {
+    getPlaylists(token).then(setPlaylists);
+    console.log("Token reçu :", token);
+  }
+  else{
+    console.log("Token non reçu :");
+  }
+}, [token]);
 
   return (
     <div>
