@@ -6,7 +6,7 @@ import Callback from "./pages/Callback";
 
 const App: React.FC = () => {
   // Pour dev, tu peux stocker le token ici
-  const token = localStorage.getItem("spotify_access_token") || "";
+  const token = localStorage.getItem("spotify_token") || "";
 
   return (
    <div>
