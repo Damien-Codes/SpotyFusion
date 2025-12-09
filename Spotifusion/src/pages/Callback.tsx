@@ -8,10 +8,9 @@ const Callback: React.FC = () => {
   const [isLogin, setIsLogin] = useState(false)
 
   useEffect(() => {
-    if (localStorage.getItem("spotify_token"))
-    {
-        navigate("/dashboard");
-        return;
+    if (localStorage.getItem("spotify_token")) {
+      navigate("/dashboard");
+      return;
     }
     async function handleAuth() {
       const params = new URLSearchParams(window.location.search);
@@ -50,7 +49,7 @@ const Callback: React.FC = () => {
 
         const data = await resp.json();
         if (data.access_token) {
-        setIsLogin(true)
+          setIsLogin(true)
           localStorage.setItem("spotify_token", data.access_token);
           navigate("/dashboard");
         } else {

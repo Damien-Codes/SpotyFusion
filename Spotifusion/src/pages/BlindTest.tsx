@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getPlaylists } from "../app/api/SpotifyApi";
 import type { Playlist } from "../app/api/SpotifyApi";
+import SideBar from "../components/SideBar/SideBar";
 
 interface DashboardProps {
   token: string;
@@ -22,12 +23,7 @@ const Dashboard: React.FC<DashboardProps> = ({ token }) => {
 
   return (
     <div>
-      <h1>BlindTest</h1>
-      <ul>
-        {playlists.map(p => (
-          <li key={p.id}>{p.name}</li>
-        ))}
-      </ul>
+      <SideBar onSelect={() => {}} />
     </div>
   );
 };
