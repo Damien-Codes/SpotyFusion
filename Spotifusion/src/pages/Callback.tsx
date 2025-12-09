@@ -7,17 +7,12 @@ const Callback: React.FC = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false)
 
-  useEffect(()=> {
-     navigate("/dashboard");
-  }, [isLogin])
-
   useEffect(() => {
-    // if (localStorage.getItem("spotify_token"))
-    // {
-    //     //console.log("cest bon");
-    //     navigate("/dashboard");
-    //     return;
-    // }
+    if (localStorage.getItem("spotify_token"))
+    {
+        navigate("/dashboard");
+        return;
+    }
     async function handleAuth() {
       const params = new URLSearchParams(window.location.search);
       const code = params.get("code");
@@ -33,7 +28,6 @@ const Callback: React.FC = () => {
       }
 
       const codeVerifier = localStorage.getItem("spotify_code_verifier");
-      console.log(codeVerifier);
       if (!codeVerifier) {
         console.error("No code_verifier stored");
         return;
@@ -55,12 +49,9 @@ const Callback: React.FC = () => {
         });
 
         const data = await resp.json();
-console.log(data);
         if (data.access_token) {
         setIsLogin(true)
           localStorage.setItem("spotify_token", data.access_token);
-          console.log("cest bon");
-          // Optionnel : stocker refresh_token si renvoyé
           navigate("/dashboard");
         } else {
           console.error("No access_token in response", data);
