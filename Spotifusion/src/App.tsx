@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Callback from "./pages/Callback";
+import BlindTest from "./pages/BlindTest";
 
 const App: React.FC = () => {
   // Pour dev, tu peux stocker le token ici
@@ -15,6 +16,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Login />} />
         <Route path="/callback" element={<Callback />} />
         <Route path="/dashboard" element={<Dashboard token={token} />} />
+        <Route path="/blindtest" element={<BlindTest token={token} />} />
       </Routes>
     </BrowserRouter>
     </div>
