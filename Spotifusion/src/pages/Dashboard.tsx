@@ -1,79 +1,140 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { getTopArtists, getTopTracks, getRecentlyPlayedTracks } from "../app/api/SpotifyApi";
 import type { Artist, RecentlyPlayedTrack, Track } from "../app/api/SpotifyApi";
+import { getValidAccessToken, isAuthenticated, logout } from "../service/spotifyAuth";
+import { Carousel } from "../components/Carousel";
+import { ArtistCard, TrackCard, RecentTrackItem, FeaturedTrack } from "../components/cards";
+import { TIME_RANGE_LABELS } from "../constants/timeRange";
+import type { TimeRange } from "../constants/timeRange";
+import "./Dashboard.css";
 
-interface DashboardProps {
-  token: string;
-}
-
-function getTimeAgo(isoDateString: string) {
-  const date = new Date(isoDateString);
-  const now = new Date();
-  const diffMs = now.getMilliseconds() - date.getMilliseconds();
-
-  const absoluteDiffMs = Math.abs(diffMs);
-
-  const seconds = Math.floor(absoluteDiffMs / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
-  const months = Math.floor(days / 30);
-  const years = Math.floor(months / 12);
-
-  let result;
-  if (years > 0) {
-    result = `il y a ${years} an${years > 1 ? 's' : ''}`;
-  } else if (months > 0) {
-    result = `il y a ${months} mois`;
-  } else if (days > 0) {
-    result = `il y a ${days} jour${days > 1 ? 's' : ''}`;
-  } else if (hours > 0) {
-    result = `il y a ${hours} heure${hours > 1 ? 's' : ''}`;
-  } else if (minutes > 0) {
-    result = `il y a ${minutes} minute${minutes > 1 ? 's' : ''}`;
-  } else if (seconds > 0) {
-    result = `il y a ${seconds} seconde${seconds > 1 ? 's' : ''}`;
-  } else {
-    result = "à l'instant";
-  }
-
-  return result;
-}
-
-const Dashboard: React.FC<DashboardProps> = ({ token }) => {
+export default function Dashboard() {
+  const navigate = useNavigate();
   const [topArtists, setTopArtists] = useState<Artist[]>([]);
   const [topTracks, setTopTracks] = useState<Track[]>([]);
   const [recentlyPlayedTracks, setRecentlyPlayedTracks] = useState<RecentlyPlayedTrack[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [timeRange, setTimeRange] = useState<TimeRange>("long_term");
+
+  const fetchData = useCallback(async () => {
+    try {
+      if (!isAuthenticated()) {
+        navigate("/");
+        return;
+      }
+
+      setIsLoading(true);
+      const token = await getValidAccessToken();
+
+      const [artists, tracks, recentTracks] = await Promise.all([
+        getTopArtists(token, 10, 0, timeRange),
+        getTopTracks(token, 10, 0, timeRange),
+        getRecentlyPlayedTracks(token, 5),
+      ]);
+
+      setTopArtists(artists || []);
+      setTopTracks(tracks || []);
+      setRecentlyPlayedTracks(recentTracks || []);
+      setIsLoading(false);
+    } catch (err) {
+      console.error("Failed to fetch Spotify data:", err);
+      setError(err instanceof Error ? err.message : "Failed to fetch data");
+      setIsLoading(false);
+
+      if (err instanceof Error && err.message.includes("not authenticated")) {
+        navigate("/");
+      }
+    }
+  }, [navigate, timeRange]);
 
   useEffect(() => {
-    const token = localStorage.getItem("spotify_token");
-    if (token) {
-      getTopArtists(token, 10).then(setTopArtists);
-      getTopTracks(token, 10).then(setTopTracks);
-      getRecentlyPlayedTracks(token, 5).then(setRecentlyPlayedTracks);
-    }
-    else{
-      console.error("Unable to get spotify token!")
-    }
-}, [token]);
+    fetchData();
+  }, [fetchData]);
+
+  const handleLogout = () => logout();
+  const handleTimeRangeChange = (range: TimeRange) => setTimeRange(range);
+
+  if (isLoading) {
+    return (
+      <div className="dashboard">
+        <div className="loading-container">
+          <div className="loading-spinner" />
+          <span className="loading-text">Chargement de vos données...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="dashboard">
+        <div className="error-container">
+          <h2>Erreur</h2>
+          <p>{error}</p>
+          <button onClick={() => navigate("/")}>Retour à la connexion</button>
+        </div>
+      </div>
+    );
+  }
+
+  const featuredTrack = recentlyPlayedTracks[0];
+  const otherRecentTracks = recentlyPlayedTracks.slice(1);
 
   return (
-    <div>
-      <h1>Vos Statistiques</h1>
-      <p>Découvrez vos artistes et morceaux préférés</p>
-      <div>
-        <button>4 semaines</button>
-        <button>6 mois</button>
-        <button>Tout le temps</button>
-      </div>
-      <h2>Top 10 Artistes</h2>
-      <ul> {topArtists.map((artist, index) => ( <li key={"top" + artist.name}>#{index + 1}. {artist.name}</li>))} </ul>
-      <h2>Top 10 Morceaux</h2>
-      <ul> {topTracks.map((track, index) => ( <li key={"top" + track.name}>#{index + 1}. {track.name} - <i>{track.artists[0].name}</i></li>))} </ul>
-      <h2>5 Derniers Titres Écoutés</h2>
-      <ul> {recentlyPlayedTracks.map((recentlyPlayedTrack) => ( <li key={"recently" + recentlyPlayedTrack.track.name}>{recentlyPlayedTrack.track.name} - <i>{recentlyPlayedTrack.track.artists[0].name}, {getTimeAgo(recentlyPlayedTrack.playedAt)}</i></li>))} </ul>
+    <div className="dashboard">
+      <header className="dashboard-header">
+        <div>
+          <h1>Vos Statistiques</h1>
+          <p>Découvrez vos artistes et morceaux préférés</p>
+        </div>
+        <button className="logout-btn" onClick={handleLogout}>
+          Se déconnecter
+        </button>
+      </header>
+
+      <nav className="time-range-selector">
+        {(Object.keys(TIME_RANGE_LABELS) as TimeRange[]).map((range) => (
+          <button
+            key={range}
+            className={`time-range-btn ${timeRange === range ? "active" : ""}`}
+            onClick={() => handleTimeRangeChange(range)}
+          >
+            {TIME_RANGE_LABELS[range]}
+          </button>
+        ))}
+      </nav>
+
+      <section>
+        <h2 className="section-title">Top 10 Artistes</h2>
+        <Carousel>
+          {topArtists.map((artist, index) => (
+            <ArtistCard key={`artist-${index}-${artist.name}`} artist={artist} rank={index + 1} />
+          ))}
+        </Carousel>
+      </section>
+
+      <section>
+        <h2 className="section-title">Top 10 Morceaux</h2>
+        <Carousel>
+          {topTracks.map((track, index) => (
+            <TrackCard key={`track-${index}-${track.name}`} track={track} rank={index + 1} />
+          ))}
+        </Carousel>
+      </section>
+
+      <section className="recently-played-section">
+        <h2 className="section-title">5 Derniers Titres Écoutés</h2>
+        <div className="recently-played-container">
+          {featuredTrack && <FeaturedTrack track={featuredTrack} />}
+          <div className="recent-tracks-list">
+            {otherRecentTracks.map((item, index) => (
+              <RecentTrackItem key={`recent-${index}-${item.track.name}`} item={item} />
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
-};
-
-export default Dashboard;
+}

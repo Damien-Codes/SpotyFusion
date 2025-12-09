@@ -1,52 +1,65 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { clientId, redirectUri } from "../config";
-
-async function handleAuth() {
-  const params = new URLSearchParams(window.location.search);
-
-  const code = params.get("code");
-  const error = params.get("error");
-
-  if (error) { console.error("Spotify auth error:", error); return; }
-  if (!code) { console.error("No code in URL");             return; }
-
-  const codeVerifier = localStorage.getItem("spotify_code_verifier");
-  if (!codeVerifier) { console.error("No code_verifier stored"); return; }
-
-  const body = new URLSearchParams({
-    client_id: clientId,
-    grant_type: "authorization_code",
-    code,
-    redirect_uri: redirectUri,
-    code_verifier: codeVerifier
-  });
-
-  try {
-    fetch("https://accounts.spotify.com/api/token", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: body.toString(),
-    }).then(async (res) => {
-      const data = await res.json();
-      if (data.access_token) {
-        localStorage.setItem("spotify_token", data.access_token);
-      } else {
-        console.error("No access_token in response", data);
-      }
-    });
-  } catch (err) {
-    console.error("Token request failed", err);
-  }
-}
+import { exchangeCodeForTokens, isAuthenticated } from "../service/spotifyAuth";
 
 const Callback: React.FC = () => {
   const navigate = useNavigate();
-  useEffect(() => { 
-    if (localStorage.getItem("spotify_token") == null) handleAuth();
-    navigate("/dashboard"); 
-});
-  return <div>Authentification Spotify en cours...</div>;
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const handleAuth = async () => {
+      // If already authenticated, go to dashboard
+      if (isAuthenticated()) {
+        navigate("/dashboard");
+        return;
+      }
+
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
+      const authError = params.get("error");
+
+      if (authError) {
+        setError(`Spotify auth error: ${authError}`);
+        setIsLoading(false);
+        return;
+      }
+
+      if (!code) {
+        setError("No authorization code found in URL");
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        await exchangeCodeForTokens(code);
+        console.log("Successfully exchanged code for tokens");
+        navigate("/dashboard");
+      } catch (err) {
+        console.error("Token exchange failed:", err);
+        setError(err instanceof Error ? err.message : "Token exchange failed");
+        setIsLoading(false);
+      }
+    };
+
+    handleAuth();
+  }, [navigate]);
+
+  if (error) {
+    return (
+      <div>
+        <h2>Authentication Error</h2>
+        <p>{error}</p>
+        <button onClick={() => navigate("/")}>Return to Login</button>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return <div>Authentification Spotify en cours...</div>;
+  }
+
+  return null;
 };
 
 export default Callback;

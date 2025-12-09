@@ -1,14 +1,34 @@
 export const spotifyApiBaseUrl = "https://api.spotify.com/v1";
 
+export interface Image {
+  url: string;
+  height: number;
+  width: number;
+}
+
 export interface Artist {
   name: string;
+  images?: Image[];
+}
+
+export interface Album {
+  name: string;
+  images: Image[];
 }
 
 export interface Track {
   name: string;
   artists: Artist[];
+  album?: Album;
 }
 
+// Raw API response interface (what Spotify returns)
+interface SpotifyRecentlyPlayedItem {
+  played_at: string;
+  track: Track;
+}
+
+// Our app's interface (camelCase)
 export interface RecentlyPlayedTrack {
   playedAt: string;
   track: Track;
@@ -28,5 +48,11 @@ export async function getTopTracks(token: string, limit: number, offset: number 
 }
 
 export async function getRecentlyPlayedTracks(token: string, limit: number): Promise<RecentlyPlayedTrack[]> {
-  return await _spotifyRequestItems(token, `/me/player/recently-played?limit=${limit}`);
+  const items: SpotifyRecentlyPlayedItem[] = await _spotifyRequestItems(token, `/me/player/recently-played?limit=${limit}`);
+
+  // Map snake_case from Spotify API to camelCase
+  return items.map(item => ({
+    playedAt: item.played_at,
+    track: item.track
+  }));
 }
