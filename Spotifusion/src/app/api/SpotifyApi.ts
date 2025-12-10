@@ -103,7 +103,7 @@ export const searchSpotify = async (
     data.tracks?.items
       .map((t: any) => ({
         id: t.id,
-        name: `${t.name} - ${t.artists.map((a: any) => a.name).join(", ")}`,
+        name: t.name + " - " + t.artists.map((a: any) => a.name).join(", "),
         type: "track" as const,
       }))
       .slice(0, 2) ?? []; // Limite à 2 titres de musique

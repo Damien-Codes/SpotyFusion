@@ -102,11 +102,7 @@ const PlayListMenu = ({ token }: BlindTestMenuProps) => {
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && suggestions[0]) addSeed(suggestions[0]);
-          }}
           placeholder="Ajouter un genre, artiste ou piste"
-          disabled={seeds.length >= 5}
         />
 
         {suggestions.length > 0 && (
