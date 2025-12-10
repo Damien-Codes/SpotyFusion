@@ -1,66 +1,136 @@
 import { useEffect, useState } from "react";
-import { Play } from "lucide-react";
-import { getPlaylists } from "../app/api/SpotifyApi";
-import type { Playlist } from "../app/api/SpotifyApi";
+import { searchSpotify } from "../app/api/SpotifyApi";
+import { SPOTIFY_GENRES } from "../constant/Spotifygenres";
 import "../assets/BlindTestMenu.css";
 
 interface BlindTestMenuProps {
   token: string;
 }
 
+type Seed = {
+  id: string;
+  label: string;
+  type: "genre" | "artist" | "track";
+};
+
 const PlayListMenu = ({ token }: BlindTestMenuProps) => {
-  const [playlists, setPlaylists] = useState<Playlist[]>([]);
-  const [selectedPlaylistId, setSelectedPlaylistId] = useState<string | null>(null);
+  const [danceability, setDanceability] = useState("");
+  const [energy, setEnergy] = useState("");
+  const [valence, setValence] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [seeds, setSeeds] = useState<Seed[]>([]);
+  const [suggestions, setSuggestions] = useState<Seed[]>([]);
 
+
+  // Suggestions auto-complétion (genres locaux + Spotify search)
   useEffect(() => {
-    if (token) {
-      getPlaylists(token).then(setPlaylists);
+    if (!inputValue) {
+      setSuggestions([]);
+      return;
     }
-  }, [token]);
+    // Suggestions locales genres
+    const genreSuggestions: Seed[] = SPOTIFY_GENRES.filter((g) =>
+      g.toLowerCase().includes(inputValue.toLowerCase())
+    )
+      .filter((g) => !seeds.some((s) => s.id === g))
+      .map((g) => ({ id: g, label: g, type: "genre" }));
 
+    // Suggestions Spotify Search (artistes et pistes)
+    if (token) {
+      searchSpotify(token, inputValue).then((results) => {
+        const apiSuggestions: Seed[] = results
+          .filter((r) => !seeds.some((s) => s.id === r.id))
+          .map((r) => ({
+            id: r.id,
+            label: r.name,
+            type: r.type,
+          }));
+        setSuggestions([...genreSuggestions, ...apiSuggestions].slice(0, 5));
+      });
+    } else {
+      setSuggestions(genreSuggestions.slice(0, 5));
+    }
+  }, [inputValue, seeds, token]);
 
-  const [danceability, setdanceability] = useState("");
-  const [energy, setenergy] = useState("");
-  const [valence, setvalence] = useState("");
-  
+  const addSeed = (seed: Seed) => {
+    if (seeds.length >= 5) return;
+    setSeeds([...seeds, seed]);
+    setInputValue("");
+    setSuggestions([]);
+  };
 
   return (
     <div className="blind-test-content">
-      <h1>Générateur de ¨Playlist</h1>
-      <p>Créez des playliste personalisées basées sur vos préférence musicales</p>
+      <h1>Générateur de Playlist</h1>
+      <p>Créez des playlists personnalisées basées sur vos préférences musicales</p>
+
+      {/* Contrôles audio */}
       <div>
-        <input type="range" 
-          min="0" 
+        <p>Caractéristiques audio</p>
+        <input
+          type="range"
+          min="0"
           max="1"
           step="0.1"
-          onChange={(e) => setdanceability(e.target.value)}
+          onChange={(e) => setDanceability(e.target.value)}
         />
-        <label>danceability</label> 
-        <input type="range" 
-          min="0" 
+        <label>Danceability</label>
+
+        <input
+          type="range"
+          min="0"
           max="1"
           step="0.1"
-          onChange={(e) => setenergy(e.target.value)} 
+          onChange={(e) => setEnergy(e.target.value)}
         />
         <label>Energy</label>
-        <input type="range" 
-          min="0" 
+
+        <input
+          type="range"
+          min="0"
           max="1"
           step="0.1"
-          onChange={(e) => setvalence(e.target.value)} 
+          onChange={(e) => setValence(e.target.value)}
         />
         <label>Valence</label>
-
       </div>
 
-      
+      {/* Input tags / seeds */}
+      <div>
+        <p>Semences (max 5)</p>
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && suggestions[0]) addSeed(suggestions[0]);
+          }}
+          placeholder="Ajouter un genre, artiste ou piste"
+          disabled={seeds.length >= 5}
+        />
 
-      
+        {suggestions.length > 0 && (
+          <ul className="autocomplete">
+            {suggestions.map((s) => (
+              <li key={s.id} onClick={() => addSeed(s)}>
+                {s.type === "genre" && "🎵"}
+                {s.type === "artist" && "👤"}
+                {s.type === "track" && "🎧"} {s.label}
+              </li>
+            ))}
+          </ul>
+        )}
 
-      <button className="start-test-btn">
-        <Play fill="currentColor" />
-        Commencer la play
-      </button>
+        <ul>
+          {seeds.map((s, index) => (
+            <li key={index}>
+              {s.type === "genre" && "🎵"}
+              {s.type === "artist" && "👤"}
+              {s.type === "track" && "🎧"} {s.label}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
