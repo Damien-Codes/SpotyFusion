@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getTopArtists, getTopTracks, getRecentlyPlayedTracks } from "../app/api/SpotifyApi";
 import type { Artist, RecentlyPlayedTrack, Track } from "../app/api/SpotifyApi";
-import { getValidAccessToken, isAuthenticated, logout } from "../service/spotifyAuth";
+import { getValidAccessToken, isAuthenticated } from "../service/spotifyAuth";
 import { Carousel } from "../components/Carousel";
 import { ArtistCard, TrackCard, RecentTrackItem, FeaturedTrack } from "../components/cards";
 import { TIME_RANGE_LABELS } from "../constants/timeRange";
@@ -55,7 +55,7 @@ export default function Dashboard() {
     fetchData();
   }, [fetchData]);
 
-  const handleLogout = () => logout();
+
   const handleTimeRangeChange = (range: TimeRange) => setTimeRange(range);
 
   const handleSideBarSelect = (item: string) => {
@@ -105,9 +105,6 @@ export default function Dashboard() {
             <h1>Vos Statistiques</h1>
             <p>Découvrez vos artistes et morceaux préférés</p>
           </div>
-          <button className="logout-btn" onClick={handleLogout}>
-            Se déconnecter
-          </button>
         </header>
 
         <nav className="time-range-selector">

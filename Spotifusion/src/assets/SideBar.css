@@ -1,55 +1,58 @@
 /* --- Conteneur Principal (La Barre Latérale) --- */
 .sidebar {
-    background-color: #000000;
-    /* Fond noir */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background-color: #121212;
     color: #ffffff;
-    /* Texte blanc par défaut */
-    width: 280px;
-    /* Largeur typique */
+    width: 220px;
     height: 100vh;
-    padding: 10px 15px;
+    padding: 20px 16px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 }
 
+/* --- Logo Section --- */
 .logo-container {
     display: flex;
     align-items: center;
-    padding: 15px 0 20px 0;
+    padding: 8px 0 24px 0;
 }
 
 .logo-icon-wrapper {
-    background-color: #1ED760;
-    border-radius: 6px;
+    background-color: #1DB954;
+    border-radius: 8px;
     padding: 8px;
     margin-right: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
 }
 
 .logo-icon {
-    color: #000000;
-    width: 24px;
-    height: 24px;
+    color: #ffffff;
+    width: 20px;
+    height: 20px;
 }
 
-.logo-container h1 {
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: bold;
+.logo-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.3px;
 }
 
+/* --- User Profile Section --- */
 .user-profile-section {
-    background-color: #121212;
-    padding: 10px;
-    border-radius: 8px;
+    background-color: #1a1a1a;
+    padding: 12px 14px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
 .avatar {
@@ -57,37 +60,38 @@
     height: 40px;
     border-radius: 50%;
     margin-right: 10px;
+    object-fit: cover;
 }
 
 .user-profile-section h2.username {
-    font-weight: bold;
-    font-size: 1rem;
+    font-weight: 600;
+    font-size: 0.95rem;
     margin: 0;
+    color: #ffffff;
 }
 
 .premium-tag {
     display: inline-block;
-    background-color: #1ED760;
+    background-color: #1DB954;
     color: #000000;
-    font-size: 0.75rem;
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 12px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
     margin-top: 4px;
 }
 
+/* --- Navigation Section --- */
 .sidebar-nav {
     flex-grow: 1;
-}
-
-.sidebar-nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
 .nav-item-wrapper {
-    margin-bottom: 5px;
+    margin-bottom: 4px;
+    position: relative;
 }
 
 .sidebar-nav-item {
@@ -95,9 +99,11 @@
     align-items: center;
     text-decoration: none;
     color: #b3b3b3;
-    padding: 10px;
-    border-radius: 4px;
-    transition: background-color 0.2s, color 0.2s;
+    padding: 10px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    position: relative;
 }
 
 .sidebar-nav-item:hover {
@@ -105,44 +111,59 @@
 }
 
 .sidebar-nav-item.active {
-    background-color: #1a1a1a;
+    background-color: #282828;
     color: #ffffff;
-    font-weight: bold;
 }
 
-.sidebar-nav-item svg {
-    margin-right: 15px;
-    width: 24px;
-    height: 24px;
+.sidebar-nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    background-color: #1DB954;
+    border-radius: 0 2px 2px 0;
 }
+
+.sidebar-nav-item .nav-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
 .sidebar-nav-item span {
-    margin-left: 15px;
-    font-size: 1rem;
-}
-.bottom-actions {
-    margin-top: auto;
-    padding-top: 15px;
-    border-top: 1px solid #282828;
+    font-size: 0.9rem;
+    line-height: 1.3;
+    white-space: pre-line;
 }
 
+/* --- Logout Button --- */
 .logout-button {
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 10px;
+    padding: 10px 12px;
+    margin-top: auto;
     border: none;
     background: none;
     color: #f44336;
-    font-size: 1rem;
+    font-size: 0.9rem;
     cursor: pointer;
     text-align: left;
-    transition: color 0.2s;
+    border-radius: 6px;
+    transition: all 0.2s ease;
 }
 
 .logout-button:hover {
-    color: #ffffff;
+    background-color: rgba(244, 67, 54, 0.1);
+    color: #ff6659;
 }
 
-.logout-button span {
-    margin-left: 0;
+.logout-button svg {
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
 }

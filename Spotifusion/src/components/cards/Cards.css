@@ -219,6 +219,9 @@
 .recent-track-info {
     flex: 1;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
 .recent-track-info .track-name {
@@ -228,6 +231,10 @@
 
 .recent-track-info .track-artist {
     font-size: 0.85rem;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    color: #a0a0a0;
 }
 
 .recent-track-time {

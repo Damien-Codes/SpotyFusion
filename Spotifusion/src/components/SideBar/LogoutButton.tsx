@@ -1,9 +1,7 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { LogOut } from 'lucide-react';
 import { clearTokens } from '../../service/spotifyAuth';
 
-const LogoutButton: React.FC = () => {
+const LogoutButton = () => {
     const handleLogout = () => {
         clearTokens();
         localStorage.removeItem('spotify_token');
@@ -11,15 +9,9 @@ const LogoutButton: React.FC = () => {
     };
 
     return (
-        <button
-            onClick={handleLogout}
-            className="logout-button"
-        >
-            <FontAwesomeIcon
-                icon={faArrowRightFromBracket}
-                style={{ marginRight: '10px' }}
-            />
-            Déconnexion
+        <button onClick={handleLogout} className="logout-button">
+            <LogOut strokeWidth={1.5} />
+            <span>Déconnexion</span>
         </button>
     );
 };

@@ -8,6 +8,7 @@
 
 .dashboard-content {
   flex: 1;
+  margin-left: 280px;
   padding: 2rem;
   overflow-y: auto;
 }
@@ -171,6 +172,7 @@
   }
 
   .dashboard-content {
+    margin-left: 0;
     padding: 1.5rem;
   }
 

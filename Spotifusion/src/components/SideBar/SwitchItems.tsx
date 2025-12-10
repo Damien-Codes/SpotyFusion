@@ -1,16 +1,36 @@
-// SwitchItems.tsx
-import { useState } from "react";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { BarChart3, Music2, ListMusic } from "lucide-react";
 
 type SwitchItemsProps = {
-    items: string[]; // Liste des boutons
-    onSelect: (item: string) => void; // Fonction pour notifier le parent
+    items: string[];
+    activeItem: string;
+    onSelect: (item: string) => void;
 };
 
-const SwitchItems = ({ items, onSelect }: SwitchItemsProps) => {
-    const [activeItem, setActiveItem] = useState<string>(items[0]); // Par défaut, premier bouton actif
+const iconMap: Record<string, React.ReactNode> = {
+    "Statistiques": <BarChart3 className="nav-icon" strokeWidth={1.5} />,
+    "Blind Test": <Music2 className="nav-icon" strokeWidth={1.5} />,
+    "Générateur\nde Playlists": <ListMusic className="nav-icon" strokeWidth={1.5} />,
+};
+
+const routeToItem: Record<string, string> = {
+    "/dashboard": "Statistiques",
+    "/blindtest": "Blind Test",
+    "/generator": "Générateur\nde Playlists",
+};
+
+const SwitchItems = ({ items, activeItem, onSelect }: SwitchItemsProps) => {
+    const location = useLocation();
+
+    useEffect(() => {
+        const currentItem = routeToItem[location.pathname];
+        if (currentItem && currentItem !== activeItem) {
+            onSelect(currentItem);
+        }
+    }, [location.pathname]);
 
     const handleClick = (item: string) => {
-        setActiveItem(item);
         onSelect(item);
     };
 
@@ -21,8 +41,12 @@ const SwitchItems = ({ items, onSelect }: SwitchItemsProps) => {
                     <a
                         href="#"
                         className={`sidebar-nav-item ${activeItem === item ? "active" : ""}`}
-                        onClick={() => handleClick(item)}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleClick(item);
+                        }}
                     >
+                        {iconMap[item]}
                         <span>{item}</span>
                     </a>
                 </li>

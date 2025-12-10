@@ -29,7 +29,7 @@ async function handleLogin() {
 
 const LoginButton: React.FC = () => {
   return (
-    <button onClick={handleLogin}>
+    <button className="spotify-button" onClick={handleLogin}>
       Se connecter avec Spotify
     </button>
   );
