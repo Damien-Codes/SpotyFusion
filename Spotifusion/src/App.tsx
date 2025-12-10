@@ -16,7 +16,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Login />} />
         <Route path="/callback" element={<Callback />} />
         <Route path="/dashboard" element={<Dashboard token={token} />} />
-        <Route path="/blindtest" element={<BlindTest token={token} />} />
+        <Route path="/blindtest" element={<BlindTest />} />
       </Routes>
     </BrowserRouter>
     </div>

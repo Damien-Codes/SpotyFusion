@@ -2,30 +2,22 @@ import React, { useEffect, useState } from "react";
 import { getPlaylists } from "../app/api/SpotifyApi";
 import type { Playlist } from "../app/api/SpotifyApi";
 import SideBar from "../components/SideBar/SideBar";
+import BlindTestMenu from "../components/BlindTestMenu";
+//import Sidebar from "../components/Sidebar";
 
-interface DashboardProps {
-  token: string;
-}
-
-const Dashboard: React.FC<DashboardProps> = ({ token }) => {
-  const [playlists, setPlaylists] = useState<Playlist[]>([]);
-
-  useEffect(() => {
-    const token = localStorage.getItem("spotify_token");
-  if (token) {
-    getPlaylists(token).then(setPlaylists);
-    console.log("Token reçu :", token);
-  }
-  else{
-    console.log("Token non reçu :");
-  }
-}, [token]);
+const Page: React.FC = () => {
+  const token = localStorage.getItem("spotify_token") || "";
 
   return (
-    <div>
+    <div style={{ display: "flex" }}>
+      {/* La barre latérale */}
       <SideBar onSelect={() => {}} />
+
+      <div>
+        <BlindTestMenu token={token} />
+      </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default Page;

@@ -2,6 +2,7 @@ export interface Playlist {
   id: string;
   name: string;
   description: string;
+  images: { url: string }[];
 }
 
 export async function getPlaylists(token: string): Promise<Playlist[]> {

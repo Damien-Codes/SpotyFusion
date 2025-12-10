@@ -35,7 +35,8 @@ const LoginButton: React.FC = () => {
 
     // 2. Générer le code_challenge
     const codeChallenge = await generateCodeChallenge(codeVerifier);
-
+    console.log(codeVerifier);
+    console.log(codeChallenge);
     // 3. URL d'autorisation Spotify (PKCE)
     const url =
       "https://accounts.spotify.com/authorize?" +
