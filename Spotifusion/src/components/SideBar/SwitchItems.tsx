@@ -17,7 +17,7 @@ const iconMap: Record<string, React.ReactNode> = {
 const routeToItem: Record<string, string> = {
     "/dashboard": "Statistiques",
     "/blindtest": "Blind Test",
-    "/generator": "Générateur\nde Playlists",
+    "/playlist": "Générateur\nde Playlists",
 };
 
 const SwitchItems = ({ items, activeItem, onSelect }: SwitchItemsProps) => {

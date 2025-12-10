@@ -1,10 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import SideBar from "../components/SideBar/SideBar";
-import BlindTestMenu from "../components/BlindTestMenu";
+import PlaylisteMenu from "../components/PlaylistMenu";
 import "./Dashboard.css";
 
-const BlindTest: React.FC = () => {
+const Playlist: React.FC = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("spotify_token") || "";
 
@@ -12,8 +12,9 @@ const BlindTest: React.FC = () => {
     if (item === "Statistiques") {
       navigate("/dashboard");
     }
-    else if (item === "Générateur\nde Playlists") {
-      navigate("/playlist");
+
+    else if (item === "Blind Test") {
+      navigate("/blindtest");
     }
   };
 
@@ -21,10 +22,10 @@ const BlindTest: React.FC = () => {
     <div className="dashboard">
       <SideBar onSelect={handleSideBarSelect} />
       <div className="dashboard-content">
-        <BlindTestMenu token={token} />
+        <PlaylisteMenu token={token} />
       </div>
     </div>
   );
 };
 
-export default BlindTest;
+export default Playlist;

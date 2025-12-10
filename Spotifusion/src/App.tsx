@@ -4,6 +4,8 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Callback from "./pages/Callback";
 import BlindTest from "./pages/BlindTest";
+import Playlist from "./pages/Playlist";
+
 
 const App: React.FC = () => {
   return (
@@ -14,6 +16,8 @@ const App: React.FC = () => {
           <Route path="/callback" element={<Callback />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/blindtest" element={<BlindTest />} />
+          <Route path="/playlist" element={<Playlist />} />
+
         </Routes>
       </BrowserRouter>
     </div>

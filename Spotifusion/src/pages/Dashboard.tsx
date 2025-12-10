@@ -62,6 +62,9 @@ export default function Dashboard() {
     if (item === "Blind Test") {
       navigate("/blindtest");
     }
+    else if (item === "Générateur\nde Playlists") {
+      navigate("/playlist");
+    }
   };
 
   if (isLoading) {
