@@ -40,7 +40,6 @@ export interface Playlist {
 }
 
 async function _spotifyRequestItems(token: string, apiRoute: string) {
-  console.log(spotifyApiBaseUrl + apiRoute);
   return (await (await fetch(spotifyApiBaseUrl + apiRoute, { headers: { Authorization: `Bearer ${token}` } })).json()).items;
 }
 
