@@ -1,9 +1,9 @@
 import React from "react";
 import { clientId, redirectUri, scopes } from "../config";
-import { 
-  generateCodeVerifier, 
-  generateCodeChallenge, 
-  storeCodeVerifier 
+import {
+  generateCodeVerifier,
+  generateCodeChallenge,
+  storeCodeVerifier,
 } from "../service/spotifyAuth";
 
 async function handleLogin() {

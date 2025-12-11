@@ -16,7 +16,9 @@ export function TrackCard({ track, rank }: TrackCardProps) {
         {imageUrl ? <img src={imageUrl} alt={track.name} /> : <MusicIcon />}
       </div>
       <div className="track-info">
-        <span className="track-name">#{rank}. {track.name}</span>
+        <span className="track-name">
+          #{rank}. {track.name}
+        </span>
         <span className="track-artist">{track.artists[0]?.name}</span>
       </div>
     </div>

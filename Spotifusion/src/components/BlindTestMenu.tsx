@@ -14,7 +14,9 @@ type GameState = "menu" | "playing" | "results";
 
 const BlindTestMenu = ({ token }: BlindTestMenuProps) => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
-  const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | null>(null);
+  const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | null>(
+    null,
+  );
   const [gameState, setGameState] = useState<GameState>("menu");
   const [tracks, setTracks] = useState<PlaylistTrack[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,8 +38,11 @@ const BlindTestMenu = ({ token }: BlindTestMenuProps) => {
 
     setIsLoading(true);
     try {
-      const playlistTracks = await getPlaylistTracks(token, selectedPlaylist.id);
-      
+      const playlistTracks = await getPlaylistTracks(
+        token,
+        selectedPlaylist.id,
+      );
+
       if (playlistTracks.length < 4) {
         alert("Cette playlist doit contenir au moins 4 morceaux pour jouer.");
         setIsLoading(false);
@@ -62,10 +67,13 @@ const BlindTestMenu = ({ token }: BlindTestMenuProps) => {
 
   const handleReplay = async () => {
     if (!selectedPlaylist || !token) return;
-    
+
     setIsLoading(true);
     try {
-      const playlistTracks = await getPlaylistTracks(token, selectedPlaylist.id);
+      const playlistTracks = await getPlaylistTracks(
+        token,
+        selectedPlaylist.id,
+      );
       setTracks(playlistTracks);
       setPlayedTracks([]);
       setFinalScore(0);
@@ -140,8 +148,8 @@ const BlindTestMenu = ({ token }: BlindTestMenuProps) => {
         </div>
       </div>
 
-      <button 
-        className="start-test-btn" 
+      <button
+        className="start-test-btn"
         onClick={handleStartQuiz}
         disabled={!selectedPlaylist || isLoading}
       >

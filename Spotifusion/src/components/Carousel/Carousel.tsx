@@ -53,7 +53,10 @@ export function Carousel({ children }: CarouselProps) {
         <div className="carousel">{children}</div>
       </div>
       {canScrollRight && (
-        <button className="carousel-arrow right" onClick={() => scroll("right")}>
+        <button
+          className="carousel-arrow right"
+          onClick={() => scroll("right")}
+        >
           ›
         </button>
       )}

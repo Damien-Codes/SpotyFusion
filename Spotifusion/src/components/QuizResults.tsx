@@ -9,7 +9,12 @@ interface QuizResultsProps {
   onReplay: () => void;
 }
 
-const QuizResults = ({ playlist, score, playedTracks, onReplay }: QuizResultsProps) => {
+const QuizResults = ({
+  playlist,
+  score,
+  playedTracks,
+  onReplay,
+}: QuizResultsProps) => {
   return (
     <div className="quiz-results-content">
       <div className="quiz-results-header">
@@ -34,7 +39,7 @@ const QuizResults = ({ playlist, score, playedTracks, onReplay }: QuizResultsPro
               <div className="track-info">
                 <span className="track-name">{track.name}</span>
                 <span className="track-artist">
-                  {track.artists.map(a => a.name).join(", ")}
+                  {track.artists.map((a) => a.name).join(", ")}
                 </span>
               </div>
             </div>

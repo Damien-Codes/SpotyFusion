@@ -1,21 +1,29 @@
-
-
 .dashboard {
   display: flex;
   min-height: 100vh;
-  background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
+  background-color: #000000;
   color: #ffffff;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
 }
 
 .dashboard-content {
   flex: 1;
-  margin-left: 260px;
+  margin-left: 296px;
+  margin-top: 8px;
+  margin-right: 8px;
+  margin-bottom: 8px;
   padding: 32px 40px;
   overflow-y: auto;
-  min-height: 100vh;
+  height: calc(100vh - 16px);
+  background-color: #121212;
+  border-radius: 8px;
 }
-
 
 .dashboard-header {
   display: flex;
@@ -30,7 +38,11 @@
   margin: 0 0 8px 0;
   letter-spacing: -0.03em;
   line-height: 1.2;
-  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.85) 100%);
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    rgba(255, 255, 255, 0.85) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -42,7 +54,6 @@
   margin: 0;
   letter-spacing: -0.01em;
 }
-
 
 .logout-btn {
   background: rgba(255, 255, 255, 0.08);
@@ -61,7 +72,6 @@
   border-color: rgba(255, 255, 255, 0.2);
   transform: scale(1.02);
 }
-
 
 .time-range-selector {
   display: flex;
@@ -94,7 +104,6 @@
   border-color: white;
 }
 
-
 .section-title {
   font-size: 1.5rem;
   font-weight: 700;
@@ -102,7 +111,6 @@
   letter-spacing: -0.02em;
   color: #ffffff;
 }
-
 
 .recently-played-section {
   margin-top: 48px;
@@ -120,7 +128,6 @@
   flex-direction: column;
   gap: 8px;
 }
-
 
 .loading-container {
   display: flex;
@@ -152,7 +159,6 @@
   font-weight: 500;
   letter-spacing: -0.01em;
 }
-
 
 .error-container {
   display: flex;
@@ -194,7 +200,6 @@
 .error-container button:hover {
   transform: scale(1.03);
 }
-
 
 @media (max-width: 1200px) {
   .recently-played-container {

@@ -1,38 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
   --color-primary: #1db954;
   --color-primary-light: #1ed760;
   --color-primary-dark: #1aab4e;
-  
+
   --color-bg-primary: #121212;
   --color-bg-secondary: #181818;
   --color-bg-tertiary: #1a1a1a;
   --color-bg-elevated: #242424;
   --color-bg-hover: rgba(255, 255, 255, 0.05);
   --color-bg-active: rgba(255, 255, 255, 0.1);
-  
+
   --color-text-primary: #ffffff;
   --color-text-secondary: #b3b3b3;
   --color-text-muted: #888888;
   --color-text-disabled: #666666;
-  
+
   --color-border: rgba(255, 255, 255, 0.1);
   --color-border-light: rgba(255, 255, 255, 0.05);
-  
+
   --color-error: #ef4444;
   --color-success: #1db954;
-  
+
   --gradient-primary: linear-gradient(135deg, #1db954 0%, #1ed760 100%);
   --gradient-bg: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
-  
+
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
   --shadow-glow: 0 0 30px rgba(29, 185, 84, 0.3);
-  
-  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -45,7 +44,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 
 * {
   box-sizing: border-box;
@@ -72,7 +70,6 @@ body {
   display: flex;
   flex-direction: column;
 }
-
 
 a {
   font-weight: 500;
@@ -114,7 +111,6 @@ p {
   line-height: 1.6;
 }
 
-
 button {
   font-family: inherit;
   cursor: pointer;
@@ -128,7 +124,6 @@ button:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
-
 
 .btn-primary {
   background: var(--gradient-primary);
@@ -144,7 +139,6 @@ button:focus-visible {
   transform: scale(1.03);
 }
 
-
 .btn-secondary {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--color-border);
@@ -159,7 +153,6 @@ button:focus-visible {
   background: var(--color-bg-active);
   border-color: var(--color-primary);
 }
-
 
 ::-webkit-scrollbar {
   width: 8px;
@@ -179,9 +172,12 @@ button:focus-visible {
   background: #505050;
 }
 
-
 .text-gradient {
-  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.85) 100%);
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    rgba(255, 255, 255, 0.85) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -198,7 +194,6 @@ button:focus-visible {
   background: rgba(255, 255, 255, 0.05);
   border-color: var(--color-border);
 }
-
 
 @keyframes fadeIn {
   from {
@@ -218,7 +213,8 @@ button:focus-visible {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -229,7 +225,6 @@ button:focus-visible {
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-out;
 }
-
 
 ::selection {
   background-color: rgba(29, 185, 84, 0.3);

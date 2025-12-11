@@ -1,327 +1,320 @@
-
-
-
 .artist-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    min-width: 140px;
-    cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  min-width: 140px;
+  cursor: pointer;
 }
 
 .artist-image {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    overflow: hidden;
-    position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
 }
 
 .artist-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .artist-image.placeholder {
-    background: linear-gradient(135deg, #2a2a2a 0%, #181818 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: linear-gradient(135deg, #2a2a2a 0%, #181818 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .artist-image.placeholder svg {
-    width: 50%;
-    height: 50%;
-    color: #555;
+  width: 50%;
+  height: 50%;
+  color: #555;
 }
 
 .artist-name {
-    font-size: 0.95rem;
-    font-weight: 600;
-    text-align: center;
-    color: #ffffff;
-    max-width: 130px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    letter-spacing: -0.01em;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  color: #ffffff;
+  max-width: 130px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.01em;
 }
 
-
 .track-card {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    min-width: 160px;
-    max-width: 160px;
-    cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 160px;
+  max-width: 160px;
+  cursor: pointer;
 }
 
 .track-image {
-    width: 100%;
-    aspect-ratio: 1;
-    height: auto;
-    border-radius: 4px;
-    overflow: hidden;
-    position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  height: auto;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
 }
 
 .track-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .track-image.placeholder {
-    background: linear-gradient(135deg, #2a2a2a 0%, #181818 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: linear-gradient(135deg, #2a2a2a 0%, #181818 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .track-image.placeholder svg {
-    width: 40%;
-    height: 40%;
-    color: #555;
+  width: 40%;
+  height: 40%;
+  color: #555;
 }
 
 .track-card .track-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .track-card .track-name {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #ffffff;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    letter-spacing: -0.01em;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.01em;
 }
 
 .track-card .track-artist {
-    font-size: 0.85rem;
-    color: #b3b3b3;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-size: 0.85rem;
+  color: #b3b3b3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-
 .featured-track {
-    flex-shrink: 0;
-    width: 300px;
+  flex-shrink: 0;
+  width: 300px;
 }
 
 .featured-image {
-    width: 100%;
-    aspect-ratio: 1;
-    border-radius: 12px;
-    overflow: hidden;
-    overflow: hidden;
-    margin-bottom: 16px;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  overflow: hidden;
+  margin-bottom: 16px;
 }
 
 .featured-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .featured-image.placeholder {
-    background: linear-gradient(135deg, #2a2a2a 0%, #181818 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: linear-gradient(135deg, #2a2a2a 0%, #181818 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .featured-image.placeholder svg {
-    width: 30%;
-    height: 30%;
-    color: #555;
+  width: 30%;
+  height: 30%;
+  color: #555;
 }
 
 .featured-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .featured-info .track-name {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 4px;
-    white-space: normal;
-    line-height: 1.2;
-    color: #ffffff;
-    letter-spacing: -0.04em;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  white-space: normal;
+  line-height: 1.2;
+  color: #ffffff;
+  letter-spacing: -0.04em;
 }
 
 .featured-info .track-artist {
-    font-size: 1rem;
-    color: #b3b3b3;
+  font-size: 1rem;
+  color: #b3b3b3;
 }
 
 .featured-time {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #666;
-    font-size: 0.9rem;
-    margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 8px;
 }
 
 .featured-time svg {
-    width: 16px;
-    height: 16px;
-    opacity: 0.8;
+  width: 16px;
+  height: 16px;
+  opacity: 0.8;
 }
 
-
 .recent-track-item {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 14px 16px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    border-radius: 12px;
-    transition: all 0.2s ease;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .recent-track-item:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.08);
-    transform: translateX(4px);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.08);
+  transform: translateX(4px);
 }
 
 .recent-track-image {
-    width: 56px;
-    height: 56px;
-    border-radius: 8px;
-    overflow: hidden;
-    flex-shrink: 0;
-    flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  flex-shrink: 0;
 }
 
 .recent-track-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .recent-track-image.placeholder {
-    background: linear-gradient(135deg, #2a2a2a 0%, #181818 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: linear-gradient(135deg, #2a2a2a 0%, #181818 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .recent-track-image.placeholder svg {
-    width: 50%;
-    height: 50%;
-    color: #555;
+  width: 50%;
+  height: 50%;
+  color: #555;
 }
 
 .recent-track-info {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .recent-track-info .track-name {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #ffffff;
-    letter-spacing: -0.01em;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.01em;
 }
 
 .recent-track-info .track-artist {
-    font-size: 0.9rem;
-    white-space: normal;
-    overflow: visible;
-    text-overflow: clip;
-    color: #b3b3b3;
+  font-size: 0.9rem;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  color: #b3b3b3;
 }
 
 .recent-track-time {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #888;
-    font-size: 0.85rem;
-    flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #888;
+  font-size: 0.85rem;
+  flex-shrink: 0;
 }
 
 .recent-track-time svg {
-    width: 16px;
-    height: 16px;
-    opacity: 0.8;
+  width: 16px;
+  height: 16px;
+  opacity: 0.8;
 }
 
-
 @media (max-width: 1200px) {
-    .featured-track {
-        width: 260px;
-    }
+  .featured-track {
+    width: 260px;
+  }
 }
 
 @media (max-width: 768px) {
-    .featured-track {
-        width: 100%;
-        display: flex;
-        gap: 16px;
-        align-items: center;
-    }
+  .featured-track {
+    width: 100%;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
 
-    .featured-image {
-        width: 100px;
-        height: 100px;
-        margin-bottom: 0;
-        flex-shrink: 0;
-    }
+  .featured-image {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
 
-    .featured-info .track-name {
-        font-size: 1.1rem;
-    }
+  .featured-info .track-name {
+    font-size: 1.1rem;
+  }
 
-    .artist-image {
-        width: 100px;
-        height: 100px;
-    }
+  .artist-image {
+    width: 100px;
+    height: 100px;
+  }
 
-    .artist-card {
-        min-width: 120px;
-    }
+  .artist-card {
+    min-width: 120px;
+  }
 
-    .artist-name {
-        font-size: 0.85rem;
-        max-width: 100px;
-    }
+  .artist-name {
+    font-size: 0.85rem;
+    max-width: 100px;
+  }
 
-    .track-card {
-        min-width: 140px;
-        max-width: 140px;
-    }
+  .track-card {
+    min-width: 140px;
+    max-width: 140px;
+  }
 
-    .track-image {
-        width: 124px;
-        height: 124px;
-    }
+  .track-image {
+    width: 124px;
+    height: 124px;
+  }
 
-    .recent-track-item {
-        padding: 12px 14px;
-    }
+  .recent-track-item {
+    padding: 12px 14px;
+  }
 
-    .recent-track-image {
-        width: 48px;
-        height: 48px;
-    }
+  .recent-track-image {
+    width: 48px;
+    height: 48px;
+  }
 }

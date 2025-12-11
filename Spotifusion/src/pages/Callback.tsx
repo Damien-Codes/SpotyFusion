@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { exchangeCodeForTokens, isAuthenticated, getStoredAccessToken } from "../service/spotifyAuth";
+import {
+  exchangeCodeForTokens,
+  isAuthenticated,
+  getStoredAccessToken,
+} from "../service/spotifyAuth";
 
 const Callback: React.FC = () => {
   const navigate = useNavigate();

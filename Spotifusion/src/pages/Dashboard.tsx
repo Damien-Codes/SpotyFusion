@@ -1,20 +1,31 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { getTopArtists, getTopTracks, getRecentlyPlayedTracks } from "../app/api/SpotifyApi";
+import {
+  getTopArtists,
+  getTopTracks,
+  getRecentlyPlayedTracks,
+} from "../app/api/SpotifyApi";
 import type { Artist, RecentlyPlayedTrack, Track } from "../app/api/SpotifyApi";
 import { getValidAccessToken, isAuthenticated } from "../service/spotifyAuth";
-import { Carousel } from "../components/Carousel";
-import { ArtistCard, TrackCard, RecentTrackItem, FeaturedTrack } from "../components/cards";
+import { Carousel } from "../components/carousel";
+import {
+  ArtistCard,
+  TrackCard,
+  RecentTrackItem,
+  FeaturedTrack,
+} from "../components/cards";
 import { TIME_RANGE_LABELS } from "../constants/timeRange";
 import type { TimeRange } from "../constants/timeRange";
-import SideBar from "../components/SideBar/SideBar";
+import SideBar from "../components/sidebar/SideBar";
 import "./Dashboard.css";
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const [topArtists, setTopArtists] = useState<Artist[]>([]);
   const [topTracks, setTopTracks] = useState<Track[]>([]);
-  const [recentlyPlayedTracks, setRecentlyPlayedTracks] = useState<RecentlyPlayedTrack[]>([]);
+  const [recentlyPlayedTracks, setRecentlyPlayedTracks] = useState<
+    RecentlyPlayedTrack[]
+  >([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [timeRange, setTimeRange] = useState<TimeRange>("long_term");
@@ -55,14 +66,12 @@ export default function Dashboard() {
     fetchData();
   }, [fetchData]);
 
-
   const handleTimeRangeChange = (range: TimeRange) => setTimeRange(range);
 
   const handleSideBarSelect = (item: string) => {
     if (item === "Blind Test") {
       navigate("/blindtest");
-    }
-    else if (item === "Générateur\nde Playlists") {
+    } else if (item === "Générateur\nde Playlists") {
       navigate("/playlist");
     }
   };
@@ -126,7 +135,11 @@ export default function Dashboard() {
           <h2 className="section-title">Top 10 Artistes</h2>
           <Carousel>
             {topArtists.map((artist, index) => (
-              <ArtistCard key={`artist-${index}-${artist.name}`} artist={artist} rank={index + 1} />
+              <ArtistCard
+                key={`artist-${index}-${artist.name}`}
+                artist={artist}
+                rank={index + 1}
+              />
             ))}
           </Carousel>
         </section>
@@ -135,7 +148,11 @@ export default function Dashboard() {
           <h2 className="section-title">Top 10 Morceaux</h2>
           <Carousel>
             {topTracks.map((track, index) => (
-              <TrackCard key={`track-${index}-${track.name}`} track={track} rank={index + 1} />
+              <TrackCard
+                key={`track-${index}-${track.name}`}
+                track={track}
+                rank={index + 1}
+              />
             ))}
           </Carousel>
         </section>
@@ -146,7 +163,10 @@ export default function Dashboard() {
             {featuredTrack && <FeaturedTrack track={featuredTrack} />}
             <div className="recent-tracks-list">
               {otherRecentTracks.map((item, index) => (
-                <RecentTrackItem key={`recent-${index}-${item.track.name}`} item={item} />
+                <RecentTrackItem
+                  key={`recent-${index}-${item.track.name}`}
+                  item={item}
+                />
               ))}
             </div>
           </div>

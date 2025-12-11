@@ -15,7 +15,9 @@ export function ArtistCard({ artist, rank }: ArtistCardProps) {
       <div className={`artist-image ${!imageUrl ? "placeholder" : ""}`}>
         {imageUrl ? <img src={imageUrl} alt={artist.name} /> : <UserIcon />}
       </div>
-      <span className="artist-name">#{rank}. {artist.name}</span>
+      <span className="artist-name">
+        #{rank}. {artist.name}
+      </span>
     </div>
   );
 }

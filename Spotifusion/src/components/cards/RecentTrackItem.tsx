@@ -13,7 +13,11 @@ export function RecentTrackItem({ item }: RecentTrackItemProps) {
   return (
     <div className="recent-track-item">
       <div className={`recent-track-image ${!imageUrl ? "placeholder" : ""}`}>
-        {imageUrl ? <img src={imageUrl} alt={item.track.name} /> : <MusicIcon />}
+        {imageUrl ? (
+          <img src={imageUrl} alt={item.track.name} />
+        ) : (
+          <MusicIcon />
+        )}
       </div>
       <div className="recent-track-info">
         <span className="track-name">{item.track.name}</span>

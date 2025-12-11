@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import SideBar from "../components/SideBar/SideBar";
+import SideBar from "../components/sidebar/SideBar";
 import BlindTestMenu from "../components/BlindTestMenu";
 import "./Dashboard.css";
 
@@ -11,8 +11,7 @@ const BlindTest: React.FC = () => {
   const handleSideBarSelect = (item: string) => {
     if (item === "Statistiques") {
       navigate("/dashboard");
-    }
-    else if (item === "Générateur\nde Playlists") {
+    } else if (item === "Générateur\nde Playlists") {
       navigate("/playlist");
     }
   };

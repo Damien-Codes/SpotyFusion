@@ -6,7 +6,6 @@ import Callback from "./pages/Callback";
 import BlindTest from "./pages/BlindTest";
 import Playlist from "./pages/Playlist";
 
-
 const App: React.FC = () => {
   return (
     <div>
@@ -17,7 +16,6 @@ const App: React.FC = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/blindtest" element={<BlindTest />} />
           <Route path="/playlist" element={<Playlist />} />
-
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SideBar from "../components/SideBar/SideBar";
+import SideBar from "../components/sidebar/SideBar";
 import PlaylistMenu from "../components/PlaylistMenu";
 import { getValidAccessToken, isAuthenticated } from "../service/spotifyAuth";
 import "./Dashboard.css";
@@ -16,7 +16,7 @@ const Playlist: React.FC = () => {
         navigate("/");
         return;
       }
-      
+
       try {
         const validToken = await getValidAccessToken();
         localStorage.setItem("spotify_token", validToken);
@@ -27,7 +27,7 @@ const Playlist: React.FC = () => {
       }
       setIsLoading(false);
     };
-    
+
     initToken();
   }, [navigate]);
 

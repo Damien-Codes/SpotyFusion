@@ -19,7 +19,7 @@ interface SpotifyIFrameAPI {
   createController: (
     element: HTMLElement,
     options: { uri: string; width?: string | number; height?: string | number },
-    callback: (controller: SpotifyEmbedController) => void
+    callback: (controller: SpotifyEmbedController) => void,
   ) => void;
 }
 
@@ -60,19 +60,22 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
   const [isAnswered, setIsAnswered] = useState(false);
   const questions = useMemo(() => {
     if (tracks.length < 4) return [];
-    
+
     const shuffledTracks = shuffleArray(tracks);
-    const questionsToGenerate = Math.min(TOTAL_QUESTIONS, shuffledTracks.length);
+    const questionsToGenerate = Math.min(
+      TOTAL_QUESTIONS,
+      shuffledTracks.length,
+    );
     const generatedQuestions: Question[] = [];
 
     for (let i = 0; i < questionsToGenerate; i++) {
       const correctTrack = shuffledTracks[i];
       const wrongOptions = shuffleArray(
-        shuffledTracks.filter(t => t.id !== correctTrack.id)
+        shuffledTracks.filter((t) => t.id !== correctTrack.id),
       ).slice(0, 3);
-      
+
       const options = shuffleArray([correctTrack, ...wrongOptions]);
-      
+
       generatedQuestions.push({
         correctTrack,
         options,
@@ -91,12 +94,12 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
   const iframeApiRef = useRef<SpotifyIFrameAPI | null>(null);
   const isApiLoadedRef = useRef(false);
 
-
-
   useEffect(() => {
     if (isApiLoadedRef.current) return;
-    
-    const existingScript = document.querySelector('script[src="https://open.spotify.com/embed/iframe-api/v1"]');
+
+    const existingScript = document.querySelector(
+      'script[src="https://open.spotify.com/embed/iframe-api/v1"]',
+    );
     if (existingScript) {
       if (window.SpotifyIframeApi) {
         iframeApiRef.current = window.SpotifyIframeApi;
@@ -108,7 +111,7 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
     const script = document.createElement("script");
     script.src = "https://open.spotify.com/embed/iframe-api/v1";
     script.async = true;
-    
+
     window.onSpotifyIframeApiReady = (api: SpotifyIFrameAPI) => {
       iframeApiRef.current = api;
       window.SpotifyIframeApi = api;
@@ -139,7 +142,7 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
         return;
       }
 
-      embedContainerRef.current.innerHTML = '';
+      embedContainerRef.current.innerHTML = "";
 
       iframeApiRef.current.createController(
         embedContainerRef.current,
@@ -150,7 +153,7 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
         },
         (controller: SpotifyEmbedController) => {
           embedControllerRef.current = controller;
-          
+
           controller.addListener("ready", () => {
             setIsPlayerReady(true);
             setTimeout(() => {
@@ -159,12 +162,14 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
           });
 
           controller.addListener("playback_update", (data: unknown) => {
-            const e = data as { data: { isPaused: boolean; isBuffering: boolean } };
+            const e = data as {
+              data: { isPaused: boolean; isBuffering: boolean };
+            };
             if (e.data && !e.data.isPaused && !e.data.isBuffering) {
               setIsPlayerReady(true);
             }
           });
-        }
+        },
       );
     };
 
@@ -197,7 +202,7 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
     if (isAnswered || questions.length === 0) return;
 
     timerRef.current = setInterval(() => {
-      setTimeLeft(prev => {
+      setTimeLeft((prev) => {
         if (prev <= 1) {
           handleTimeUp();
           return 0;
@@ -224,17 +229,24 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
       }
       onGameEnd(
         selectedAnswer === currentQ.correctTrack.id ? score + 1 : score,
-        newPlayedTracks
+        newPlayedTracks,
       );
       return;
     }
 
-    setCurrentQuestion(prev => prev + 1);
+    setCurrentQuestion((prev) => prev + 1);
     setTimeLeft(QUESTION_TIME);
     setSelectedAnswer(null);
     setIsAnswered(false);
     setIsPlayerReady(false);
-  }, [currentQuestion, questions, playedTracks, selectedAnswer, score, onGameEnd]);
+  }, [
+    currentQuestion,
+    questions,
+    playedTracks,
+    selectedAnswer,
+    score,
+    onGameEnd,
+  ]);
 
   useEffect(() => {
     if (!isAnswered) return;
@@ -266,13 +278,13 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
 
     const currentQ = questions[currentQuestion];
     if (trackId === currentQ.correctTrack.id) {
-      setScore(prev => prev + 1);
+      setScore((prev) => prev + 1);
     }
   };
 
   const getButtonClass = (trackId: string) => {
     if (!isAnswered) return "quiz-answer-btn";
-    
+
     const currentQ = questions[currentQuestion];
     if (trackId === currentQ.correctTrack.id) {
       return "quiz-answer-btn correct";
@@ -283,11 +295,7 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
     return "quiz-answer-btn";
   };
 
-  const getCircleProgress = () => {
-    const circumference = 2 * Math.PI * 45;
-    const progress = (timeLeft / QUESTION_TIME) * circumference;
-    return circumference - progress;
-  };
+
 
   if (questions.length === 0) {
     return (
@@ -309,11 +317,15 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
         </button>
         <h2 className="quiz-playlist-name">{playlist.name}</h2>
         <div className="quiz-progress-indicator">
-          <span>{currentQuestion + 1}/{questions.length}</span>
+          <span>
+            {currentQuestion + 1}/{questions.length}
+          </span>
           <div className="quiz-progress-bar">
-            <div 
-              className="quiz-progress-fill" 
-              style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
+            <div
+              className="quiz-progress-fill"
+              style={{
+                width: `${((currentQuestion + 1) / questions.length) * 100}%`,
+              }}
             />
           </div>
         </div>
@@ -326,33 +338,30 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
               className="quiz-timer-bg"
               cx="50"
               cy="50"
-              r="45"
+              r="40"
               fill="none"
-              strokeWidth="6"
+              strokeWidth="5"
             />
             <circle
               className="quiz-timer-progress"
               cx="50"
               cy="50"
-              r="45"
+              r="40"
               fill="none"
-              strokeWidth="6"
-              strokeDasharray={2 * Math.PI * 45}
-              strokeDashoffset={getCircleProgress()}
-              strokeLinecap="round"
+              strokeWidth="5"
+              strokeDasharray={2 * Math.PI * 40}
+              strokeDashoffset={2 * Math.PI * 40 - (2 * Math.PI * 40 * timeLeft) / QUESTION_TIME}
             />
           </svg>
           <span className="quiz-timer-text">{timeLeft}</span>
         </div>
-        
-        <div className="quiz-score-pill">
-          {score} pts
-        </div>
+
+        <div className="quiz-score-pill">{score} pts</div>
 
         <div className="quiz-player-container">
-          <div 
-            ref={embedContainerRef} 
-            className={`spotify-embed-container ${isPlayerReady ? 'ready' : 'loading'}`}
+          <div
+            ref={embedContainerRef}
+            className={`spotify-embed-container ${isPlayerReady ? "ready" : "loading"}`}
           />
           {!isPlayerReady && (
             <div className="player-loading-overlay">
@@ -373,7 +382,6 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
             </button>
           ))}
         </div>
-
       </div>
     </div>
   );
