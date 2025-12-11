@@ -121,3 +121,9 @@
   width: 18px;
   height: 18px;
 }
+
+.start-test-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}

@@ -91,6 +91,27 @@ export async function getRecentlyPlayedTracks(token: string, limit: number): Pro
 
 export const getPlaylists = (token: string) => fetchSpotifyItems<Playlist>(token, `/me/playlists`);
 
+export interface PlaylistTrack {
+  id: string;
+  name: string;
+  artists: Artist[];
+  album: Album;
+  uri: string;
+}
+
+export async function getPlaylistTracks(token: string, playlistId: string): Promise<PlaylistTrack[]> {
+  const data = await fetchSpotify<{ items: { track: any }[] }>(token, `/playlists/${playlistId}/tracks?limit=100`);
+  return (data?.items || [])
+    .filter(item => item.track && item.track.id)
+    .map(item => ({
+      id: item.track.id,
+      name: item.track.name,
+      artists: item.track.artists,
+      album: item.track.album,
+      uri: item.track.uri,
+    }));
+}
+
 async function searchTracks(token: string, query: string, limit: number): Promise<RecommendationTrack[]> {
   if (!token || !query) return [];
   const data = await fetchSpotify<{ tracks: { items: any[] } }>(token, `/search?q=${encodeURIComponent(query)}&type=track&limit=${limit}`);

@@ -1,16 +1,25 @@
 import { useEffect, useState } from "react";
 import { Play } from "lucide-react";
-import { getPlaylists } from "../app/api/SpotifyApi";
-import type { Playlist } from "../app/api/SpotifyApi";
+import { getPlaylists, getPlaylistTracks } from "../app/api/SpotifyApi";
+import type { Playlist, PlaylistTrack } from "../app/api/SpotifyApi";
+import QuizGame from "./QuizGame";
+import QuizResults from "./QuizResults";
 import "../assets/BlindTestMenu.css";
 
 interface BlindTestMenuProps {
   token: string;
 }
 
+type GameState = "menu" | "playing" | "results";
+
 const BlindTestMenu = ({ token }: BlindTestMenuProps) => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
-  const [selectedPlaylistId, setSelectedPlaylistId] = useState<string | null>(null);
+  const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | null>(null);
+  const [gameState, setGameState] = useState<GameState>("menu");
+  const [tracks, setTracks] = useState<PlaylistTrack[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [finalScore, setFinalScore] = useState(0);
+  const [playedTracks, setPlayedTracks] = useState<PlaylistTrack[]>([]);
 
   useEffect(() => {
     if (token) {
@@ -18,9 +27,84 @@ const BlindTestMenu = ({ token }: BlindTestMenuProps) => {
     }
   }, [token]);
 
-  const handleCardClick = (playlistId: string) => {
-    setSelectedPlaylistId(selectedPlaylistId === playlistId ? null : playlistId);
+  const handleCardClick = (playlist: Playlist) => {
+    setSelectedPlaylist(selectedPlaylist?.id === playlist.id ? null : playlist);
   };
+
+  const handleStartQuiz = async () => {
+    if (!selectedPlaylist || !token) return;
+
+    setIsLoading(true);
+    try {
+      const playlistTracks = await getPlaylistTracks(token, selectedPlaylist.id);
+      
+      if (playlistTracks.length < 4) {
+        alert("Cette playlist doit contenir au moins 4 morceaux pour jouer.");
+        setIsLoading(false);
+        return;
+      }
+
+      setTracks(playlistTracks);
+      setGameState("playing");
+    } catch (error) {
+      console.error("Erreur lors du chargement des morceaux:", error);
+      alert("Erreur lors du chargement de la playlist.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGameEnd = (score: number, played: PlaylistTrack[]) => {
+    setFinalScore(score);
+    setPlayedTracks(played);
+    setGameState("results");
+  };
+
+  const handleReplay = async () => {
+    if (!selectedPlaylist || !token) return;
+    
+    setIsLoading(true);
+    try {
+      const playlistTracks = await getPlaylistTracks(token, selectedPlaylist.id);
+      setTracks(playlistTracks);
+      setPlayedTracks([]);
+      setFinalScore(0);
+      setGameState("playing");
+    } catch (error) {
+      console.error("Erreur lors du rechargement:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCloseQuiz = () => {
+    setGameState("menu");
+    setTracks([]);
+    setPlayedTracks([]);
+    setFinalScore(0);
+  };
+
+  if (gameState === "playing" && selectedPlaylist && tracks.length > 0) {
+    return (
+      <QuizGame
+        playlist={selectedPlaylist}
+        tracks={tracks}
+        onClose={handleCloseQuiz}
+        onGameEnd={handleGameEnd}
+      />
+    );
+  }
+
+  if (gameState === "results" && selectedPlaylist) {
+    return (
+      <QuizResults
+        playlist={selectedPlaylist}
+        score={finalScore}
+        playedTracks={playedTracks}
+        onReplay={handleReplay}
+      />
+    );
+  }
 
   return (
     <div className="blind-test-content">
@@ -35,7 +119,7 @@ const BlindTestMenu = ({ token }: BlindTestMenuProps) => {
               <div
                 className="playlist"
                 key={playlist.id}
-                onClick={() => handleCardClick(playlist.id)}
+                onClick={() => handleCardClick(playlist)}
               >
                 {playlist.images[0]?.url ? (
                   <img src={playlist.images[0].url} alt={playlist.name} />
@@ -43,7 +127,7 @@ const BlindTestMenu = ({ token }: BlindTestMenuProps) => {
                   <div className="no-image">No Image</div>
                 )}
                 <span>{playlist.name}</span>
-                {selectedPlaylistId === playlist.id && (
+                {selectedPlaylist?.id === playlist.id && (
                   <div className="check-logo" />
                 )}
               </div>
@@ -54,9 +138,13 @@ const BlindTestMenu = ({ token }: BlindTestMenuProps) => {
         </div>
       </div>
 
-      <button className="start-test-btn">
+      <button 
+        className="start-test-btn" 
+        onClick={handleStartQuiz}
+        disabled={!selectedPlaylist || isLoading}
+      >
         <Play fill="currentColor" />
-        Commencer le Blind Test
+        {isLoading ? "Chargement..." : "Commencer le Blind Test"}
       </button>
     </div>
   );
