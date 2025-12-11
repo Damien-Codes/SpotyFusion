@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Sparkles, Info, X, ChevronDown, Music, Save, Activity } from "lucide-react";
 import { searchSpotify, getRecommendations } from "../app/api/SpotifyApi";
 import type { RecommendationTrack, RecommendationError } from "../app/api/SpotifyApi";
 import { SPOTIFY_GENRES } from "../constant/Spotifygenres";
@@ -53,24 +54,47 @@ export default function PlaylistMenu({ token }: { token: string }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<RecommendationError | null>(null);
 
+
   useEffect(() => {
-    if (!inputValue) { setSuggestions([]); return; }
-    
+    if (!inputValue) return;
+
     const genreSuggestions: Seed[] = SPOTIFY_GENRES
       .filter((g) => g.toLowerCase().includes(inputValue.toLowerCase()) && !seeds.some((s) => s.id === g))
       .map((g) => ({ id: g, label: g, type: "genre" }));
 
-    if (token) {
-      searchSpotify(token, inputValue).then((results) => {
-        const apiSuggestions: Seed[] = results
-          .filter((r) => !seeds.some((s) => s.id === r.id))
-          .map((r) => ({ id: r.id, label: r.name, type: r.type }));
-        setSuggestions([...genreSuggestions, ...apiSuggestions].slice(0, 5));
-      });
-    } else {
-      setSuggestions(genreSuggestions.slice(0, 5));
-    }
+    const fetchSuggestions = async () => {
+        if (token) {
+          try {
+             const results = await searchSpotify(token, inputValue);
+             const apiSuggestions: Seed[] = results
+              .filter((r) => !seeds.some((s) => s.id === r.id))
+              .map((r) => ({ id: r.id, label: r.name, type: r.type }));
+             setSuggestions([...genreSuggestions, ...apiSuggestions].slice(0, 5));
+          } catch {
+             setSuggestions(genreSuggestions.slice(0, 5));
+          }
+        } else {
+          setSuggestions(genreSuggestions.slice(0, 5));
+        }
+    };
+    
+    const timeoutId = setTimeout(() => {
+        fetchSuggestions();
+    }, 300);
+    
+    return () => clearTimeout(timeoutId);
+
   }, [inputValue, seeds, token]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setInputValue(val);
+    if (!val) {
+        setSuggestions([]);
+    }
+  };
+  
+
 
   const addSeed = (seed: Seed) => {
     if (seeds.length < 5) {
@@ -127,7 +151,8 @@ export default function PlaylistMenu({ token }: { token: string }) {
         <div className="control-section">
           <h2>Semences</h2>
           <div className="seeds-search">
-            <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder="Rechercher artistes, pistes ou genres..." />
+            <input type="text" value={inputValue} onChange={handleInputChange} placeholder="Rechercher artistes, pistes ou genres..." />
+            <ChevronDown className="search-chevron" size={20} />
             {suggestions.length > 0 && (
               <ul className="autocomplete-dropdown">
                 {suggestions.map((s) => (
@@ -156,7 +181,9 @@ export default function PlaylistMenu({ token }: { token: string }) {
                 {seeds.map((s) => (
                   <span key={s.id} className="selected-seed">
                     {s.label}
-                    <button onClick={() => setSeeds(seeds.filter((x) => x.id !== s.id))}>×</button>
+                    <button onClick={() => setSeeds(seeds.filter((x) => x.id !== s.id))}>
+                      <X size={14} />
+                    </button>
                   </span>
                 ))}
               </div>
@@ -164,16 +191,14 @@ export default function PlaylistMenu({ token }: { token: string }) {
           )}
 
           <div className="seeds-info">
-            <span className="seeds-info-icon">ℹ️</span>
+            <Info className="seeds-info-icon" size={20} />
             <p>Ajoutez jusqu'à 5 semences pour personnaliser vos recommandations</p>
           </div>
         </div>
       </div>
 
       <button className="generate-btn" onClick={handleGenerate} disabled={isLoading}>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-        </svg>
+        <Sparkles size={20} />
         {isLoading ? "Génération en cours..." : "Générer les recommandations"}
       </button>
 
@@ -199,11 +224,7 @@ export default function PlaylistMenu({ token }: { token: string }) {
           <div className="recommendations-header">
             <h2>Recommandations ({recommendations.length})</h2>
             <button className="save-playlist-btn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
-                <polyline points="17,21 17,13 7,13 7,21" />
-                <polyline points="7,3 7,8 15,8" />
-              </svg>
+              <Save size={18} />
               Sauvegarder la Playlist
             </button>
           </div>
@@ -217,15 +238,23 @@ export default function PlaylistMenu({ token }: { token: string }) {
                   <p className="track-title">{track.name}</p>
                   <p className="track-artist">{track.artists.map((a) => a.name).join(", ")}</p>
                 </div>
-                <span className="track-artist-secondary">{track.artists[0]?.name}</span>
+                <span className="track-artist-secondary">{track.album?.name}</span>
                 <span className="track-duration">{formatDuration(track.duration_ms)}</span>
                 <div className="energy-score">
-                  <span className="energy-icon">⚡</span>
+                  <Activity size={20} className="energy-icon" />
                   <span className="energy-value">{(track.energy ?? 0).toFixed(2)}</span>
                 </div>
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {recommendations.length === 0 && !isLoading && !error && (
+        <div className="empty-recommendations">
+           <Music className="empty-recommendations-icon" size={64} strokeWidth={1} />
+           <h3>Aucune recommandation pour le moment</h3>
+           <p>Configurez vos préférences et ajoutez des semences, puis cliquez sur "Générer les recommandations"</p>
         </div>
       )}
     </div>

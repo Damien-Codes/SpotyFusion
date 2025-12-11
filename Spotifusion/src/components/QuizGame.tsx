@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { X } from "lucide-react";
 import type { PlaylistTrack, Playlist } from "../app/api/SpotifyApi";
 import "../assets/QuizGame.css";
@@ -30,7 +30,7 @@ interface SpotifyEmbedController {
   togglePlay: () => void;
   loadUri: (uri: string, options?: { play?: boolean }) => void;
   destroy: () => void;
-  addListener: (event: string, callback: (data: any) => void) => void;
+  addListener: (event: string, callback: (data: unknown) => void) => void;
 }
 
 declare global {
@@ -58,17 +58,7 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
   const [timeLeft, setTimeLeft] = useState(QUESTION_TIME);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [playedTracks, setPlayedTracks] = useState<PlaylistTrack[]>([]);
-  const [isPlayerReady, setIsPlayerReady] = useState(false);
-  const timerRef = useRef<number | null>(null);
-  const nextQuestionTimerRef = useRef<number | null>(null);
-  const embedContainerRef = useRef<HTMLDivElement | null>(null);
-  const embedControllerRef = useRef<SpotifyEmbedController | null>(null);
-  const iframeApiRef = useRef<SpotifyIFrameAPI | null>(null);
-  const isApiLoadedRef = useRef(false);
-
-  const generateQuestions = useCallback(() => {
+  const questions = useMemo(() => {
     if (tracks.length < 4) return [];
     
     const shuffledTracks = shuffleArray(tracks);
@@ -92,10 +82,16 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
     return generatedQuestions;
   }, [tracks]);
 
-  useEffect(() => {
-    const generatedQuestions = generateQuestions();
-    setQuestions(generatedQuestions);
-  }, [generateQuestions]);
+  const [playedTracks, setPlayedTracks] = useState<PlaylistTrack[]>([]);
+  const [isPlayerReady, setIsPlayerReady] = useState(false);
+  const timerRef = useRef<number | null>(null);
+  const nextQuestionTimerRef = useRef<number | null>(null);
+  const embedContainerRef = useRef<HTMLDivElement | null>(null);
+  const embedControllerRef = useRef<SpotifyEmbedController | null>(null);
+  const iframeApiRef = useRef<SpotifyIFrameAPI | null>(null);
+  const isApiLoadedRef = useRef(false);
+
+
 
   useEffect(() => {
     if (isApiLoadedRef.current) return;
@@ -162,7 +158,8 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
             }, 500);
           });
 
-          controller.addListener("playback_update", (e: any) => {
+          controller.addListener("playback_update", (data: unknown) => {
+            const e = data as { data: { isPaused: boolean; isBuffering: boolean } };
             if (e.data && !e.data.isPaused && !e.data.isBuffering) {
               setIsPlayerReady(true);
             }
@@ -188,6 +185,14 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
     };
   }, [currentQuestion, questions]);
 
+  const handleTimeUp = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    setIsAnswered(true);
+    setSelectedAnswer(null);
+  }, []);
+
   useEffect(() => {
     if (isAnswered || questions.length === 0) return;
 
@@ -206,7 +211,7 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
         clearInterval(timerRef.current);
       }
     };
-  }, [currentQuestion, isAnswered, questions.length]);
+  }, [currentQuestion, isAnswered, questions.length, handleTimeUp]);
 
   const goToNextQuestion = useCallback(() => {
     const currentQ = questions[currentQuestion];
@@ -248,14 +253,6 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
       }
     };
   }, [isAnswered, goToNextQuestion]);
-
-  const handleTimeUp = () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
-    setIsAnswered(true);
-    setSelectedAnswer(null);
-  };
 
   const handleAnswer = (trackId: string) => {
     if (isAnswered) return;
@@ -346,6 +343,10 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
             />
           </svg>
           <span className="quiz-timer-text">{timeLeft}</span>
+        </div>
+        
+        <div className="quiz-score-pill">
+          {score} pts
         </div>
 
         <div className="quiz-player-container">

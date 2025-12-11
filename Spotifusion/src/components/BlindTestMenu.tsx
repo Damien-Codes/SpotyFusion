@@ -121,15 +121,17 @@ const BlindTestMenu = ({ token }: BlindTestMenuProps) => {
                 key={playlist.id}
                 onClick={() => handleCardClick(playlist)}
               >
-                {playlist.images[0]?.url ? (
-                  <img src={playlist.images[0].url} alt={playlist.name} />
-                ) : (
-                  <div className="no-image">No Image</div>
-                )}
+                <div className="playlist-image-container">
+                  {playlist.images[0]?.url ? (
+                    <img src={playlist.images[0].url} alt={playlist.name} />
+                  ) : (
+                    <div className="no-image">No Image</div>
+                  )}
+                  {selectedPlaylist?.id === playlist.id && (
+                    <div className="check-logo" />
+                  )}
+                </div>
                 <span>{playlist.name}</span>
-                {selectedPlaylist?.id === playlist.id && (
-                  <div className="check-logo" />
-                )}
               </div>
             ))
           ) : (

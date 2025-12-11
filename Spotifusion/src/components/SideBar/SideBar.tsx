@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../../assets/SideBar.css';
 import LogoutButton from './LogoutButton';
@@ -16,25 +16,19 @@ const routeToItem: Record<string, string> = {
     "/playlist": "Générateur\nde Playlists",
 };
 
+const items = ["Statistiques", "Blind Test", "Générateur\nde Playlists"];
+
 const SideBar = ({ onSelect }: SideBarProps) => {
-    const items = ["Statistiques", "Blind Test", "Générateur\nde Playlists"];
     const location = useLocation();
     
-    const getInitialActiveItem = () => {
-        return routeToItem[location.pathname] || items[0];
-    };
+    const getActiveItem = () => routeToItem[location.pathname] || items[0];
     
-    const [activeItem, setActiveItem] = useState<string>(getInitialActiveItem);
-
-    useEffect(() => {
-        const currentItem = routeToItem[location.pathname];
-        if (currentItem) {
-            setActiveItem(currentItem);
-        }
-    }, [location.pathname]);
+    const [selectedItem, setSelectedItem] = useState<string | null>(null);
+    
+    const activeItem = selectedItem ?? getActiveItem();
 
     const handleSelect = (item: string) => {
-        setActiveItem(item);
+        setSelectedItem(item);
         onSelect(item);
     };
 
@@ -47,7 +41,9 @@ const SideBar = ({ onSelect }: SideBarProps) => {
                 <span className="logo-text">SpotyFusion</span>
             </div>
 
+            <div className="sidebar-divider" />
             <UserName />
+            <div className="sidebar-divider" />
 
             <SwitchItems items={items} activeItem={activeItem} onSelect={handleSelect} />
 

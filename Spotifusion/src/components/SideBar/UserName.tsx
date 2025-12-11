@@ -16,6 +16,7 @@ async function fetchUserProfile(accessToken: string): Promise<UserProfile | null
     if (!response.ok) {
         if (response.status === 401) {
             localStorage.removeItem("spotify_token");
+            localStorage.removeItem("spotify_user_profile");
             window.location.reload();
         }
         return null;
@@ -31,17 +32,25 @@ async function fetchUserProfile(accessToken: string): Promise<UserProfile | null
 }
 
 const UserName = () => {
-    const [userProfile, setUserProfile] = useState<UserProfile>({
-        name: "",
-        avatarUrl: "/default-avatar.png",
-        isPremium: false,
+    const [userProfile, setUserProfile] = useState<UserProfile>(() => {
+        const cached = localStorage.getItem("spotify_user_profile");
+        return cached ? JSON.parse(cached) : {
+            name: "",
+            avatarUrl: "/default-avatar.png",
+            isPremium: false,
+        };
     });
 
     useEffect(() => {
         const accessToken = localStorage.getItem("spotify_token");
-        if (accessToken) {
+        const cachedProfile = localStorage.getItem("spotify_user_profile");
+
+        if (accessToken && !cachedProfile) {
             fetchUserProfile(accessToken).then(profile => {
-                if (profile) setUserProfile(profile);
+                if (profile) {
+                    setUserProfile(profile);
+                    localStorage.setItem("spotify_user_profile", JSON.stringify(profile));
+                }
             });
         }
     }, []);

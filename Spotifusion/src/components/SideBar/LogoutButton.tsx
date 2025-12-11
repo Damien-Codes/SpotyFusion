@@ -5,6 +5,7 @@ const LogoutButton = () => {
     const handleLogout = () => {
         clearTokens();
         localStorage.removeItem('spotify_token');
+        localStorage.removeItem('spotify_user_profile');
         window.location.href = "/";
     };
 

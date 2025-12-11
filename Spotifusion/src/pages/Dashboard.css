@@ -1,3 +1,5 @@
+
+
 .dashboard {
   display: flex;
   min-height: 100vh;
@@ -8,97 +10,117 @@
 
 .dashboard-content {
   flex: 1;
-  margin-left: 280px;
-  padding: 2rem;
+  margin-left: 260px;
+  padding: 32px 40px;
   overflow-y: auto;
+  min-height: 100vh;
 }
+
 
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 2rem;
+  margin-bottom: 32px;
 }
 
 .dashboard-header h1 {
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   font-weight: 700;
-  margin: 0 0 0.5rem 0;
-  letter-spacing: -0.02em;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.85) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .dashboard-header p {
-  color: #a0a0a0;
+  color: #b3b3b3;
   font-size: 1rem;
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
+
 .logout-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #ffffff;
   padding: 0.75rem 1.5rem;
   border-radius: 50px;
   font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.logout-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.02);
-}
-
-.time-range-selector {
-  display: flex;
-  gap: 0.75rem;
-  margin-bottom: 2.5rem;
-}
-
-.time-range-btn {
-  background: #2a2a2a;
-  border: none;
-  color: #a0a0a0;
-  padding: 0.6rem 1.25rem;
-  border-radius: 50px;
-  font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.02);
+}
+
+
+.time-range-selector {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.time-range-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #b3b3b3;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: -0.01em;
+}
+
 .time-range-btn:hover {
-  background: #3a3a3a;
+  background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 .time-range-btn.active {
   background: #ffffff;
   color: #000000;
+  border-color: white;
 }
+
 
 .section-title {
   font-size: 1.5rem;
   font-weight: 700;
-  margin: 0 0 1.25rem 0;
-  letter-spacing: -0.01em;
+  margin: 0 0 20px 0;
+  letter-spacing: -0.02em;
+  color: #ffffff;
 }
 
+
 .recently-played-section {
-  margin-top: 2rem;
+  margin-top: 48px;
 }
 
 .recently-played-container {
   display: flex;
-  gap: 2rem;
+  gap: 32px;
+  align-items: flex-start;
 }
 
 .recent-tracks-list {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
 }
+
 
 .loading-container {
   display: flex;
@@ -106,13 +128,13 @@
   align-items: center;
   justify-content: center;
   min-height: 60vh;
-  gap: 1.5rem;
+  gap: 24px;
 }
 
 .loading-spinner {
-  width: 48px;
-  height: 48px;
-  border: 3px solid #333;
+  width: 56px;
+  height: 56px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
   border-top-color: #1db954;
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -125,9 +147,12 @@
 }
 
 .loading-text {
-  color: #a0a0a0;
+  color: #b3b3b3;
   font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
+
 
 .error-container {
   display: flex;
@@ -135,35 +160,46 @@
   align-items: center;
   justify-content: center;
   min-height: 60vh;
-  gap: 1.5rem;
+  gap: 20px;
   text-align: center;
 }
 
 .error-container h2 {
   color: #ff4444;
   margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .error-container p {
-  color: #a0a0a0;
+  color: #b3b3b3;
   margin: 0;
+  max-width: 400px;
+  line-height: 1.6;
 }
 
 .error-container button {
-  background: #1db954;
+  background: linear-gradient(135deg, #1db954 0%, #1ed760 100%);
   border: none;
   color: #000000;
-  padding: 0.75rem 2rem;
+  padding: 14px 32px;
   border-radius: 50px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .error-container button:hover {
-  background: #1ed760;
-  transform: scale(1.02);
+  transform: scale(1.03);
+}
+
+
+@media (max-width: 1200px) {
+  .recently-played-container {
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 768px) {
@@ -173,11 +209,27 @@
 
   .dashboard-content {
     margin-left: 0;
-    padding: 1.5rem;
+    padding: 24px 16px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 16px;
   }
 
   .dashboard-header h1 {
-    font-size: 1.75rem;
+    font-size: 2rem;
+  }
+
+  .time-range-selector {
+    flex-wrap: wrap;
+  }
+
+  .time-range-btn {
+    flex: 1;
+    min-width: calc(33.33% - 8px);
+    text-align: center;
+    padding: 8px 16px;
   }
 
   .recently-played-container {
