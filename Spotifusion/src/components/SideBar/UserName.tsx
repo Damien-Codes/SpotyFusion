@@ -1,37 +1,5 @@
 import { useState, useEffect } from "react";
-
-interface UserProfile {
-  name: string;
-  avatarUrl: string;
-  isPremium: boolean;
-}
-
-async function fetchUserProfile(
-  accessToken: string,
-): Promise<UserProfile | null> {
-  if (!accessToken) return null;
-
-  const response = await fetch("https://api.spotify.com/v1/me", {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  });
-
-  if (!response.ok) {
-    if (response.status === 401) {
-      localStorage.removeItem("spotify_token");
-      localStorage.removeItem("spotify_user_profile");
-      window.location.reload();
-    }
-    return null;
-  }
-
-  const data = await response.json();
-
-  return {
-    name: data.display_name || "Utilisateur Spotify",
-    avatarUrl: data.images?.[0]?.url || "https://via.placeholder.com/40",
-    isPremium: data.product === "premium",
-  };
-}
+import { getUserProfile, type UserProfile } from "../../app/api/SpotifyApi";
 
 const UserName = () => {
   const [userProfile, setUserProfile] = useState<UserProfile>(() => {
@@ -50,7 +18,7 @@ const UserName = () => {
     const cachedProfile = localStorage.getItem("spotify_user_profile");
 
     if (accessToken && !cachedProfile) {
-      fetchUserProfile(accessToken).then((profile) => {
+      getUserProfile(accessToken).then((profile) => {
         if (profile) {
           setUserProfile(profile);
           localStorage.setItem("spotify_user_profile", JSON.stringify(profile));

@@ -66,6 +66,12 @@ export interface RecommendationError {
   message: string;
 }
 
+export interface UserProfile {
+  name: string;
+  avatarUrl: string;
+  isPremium: boolean;
+}
+
 async function fetchSpotify<T>(
   token: string,
   endpoint: string,
@@ -119,6 +125,26 @@ export async function getRecentlyPlayedTracks(
 
 export const getPlaylists = (token: string) =>
   fetchSpotifyItems<Playlist>(token, `/me/playlists`);
+
+export async function getUserProfile(
+  token: string,
+): Promise<UserProfile | null> {
+  if (!token) return null;
+
+  const data = await fetchSpotify<{
+    display_name?: string;
+    images?: { url: string }[];
+    product?: string;
+  }>(token, `/me`);
+
+  if (!data) return null;
+
+  return {
+    name: data.display_name || "Utilisateur Spotify",
+    avatarUrl: data.images?.[0]?.url || "https://via.placeholder.com/40",
+    isPremium: data.product === "premium",
+  };
+}
 
 export interface PlaylistTrack {
   id: string;
