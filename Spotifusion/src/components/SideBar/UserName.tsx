@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getUserProfile, type UserProfile } from "../../app/api/SpotifyApi";
+import { getUserProfile, type UserProfile } from "../../service/SpotifyApi";
 
 const UserName = () => {
   const [userProfile, setUserProfile] = useState<UserProfile>(() => {

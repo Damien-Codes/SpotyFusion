@@ -4,9 +4,9 @@ import {
   getTopArtists,
   getTopTracks,
   getRecentlyPlayedTracks,
-} from "../app/api/SpotifyApi";
-import type { Artist, RecentlyPlayedTrack, Track } from "../app/api/SpotifyApi";
-import { getValidAccessToken, isAuthenticated } from "../service/spotifyAuth";
+} from "../service/SpotifyApi";
+import type { Artist, RecentlyPlayedTrack, Track } from "../service/SpotifyApi";
+import { getValidAccessToken, isAuthenticated } from "../service/SpotifyAuth";
 import { Carousel } from "../components/carousel";
 import {
   ArtistCard,

@@ -1,5 +1,5 @@
 import { Play } from "lucide-react";
-import type { PlaylistTrack, Playlist } from "../app/api/SpotifyApi";
+import type { PlaylistTrack, Playlist } from "../service/SpotifyApi";
 import "../assets/QuizResults.css";
 
 interface QuizResultsProps {

@@ -1,5 +1,5 @@
 import { LogOut } from "lucide-react";
-import { clearTokens } from "../../service/spotifyAuth";
+import { clearTokens } from "../../service/SpotifyAuth";
 
 const LogoutButton = () => {
   const handleLogout = () => {

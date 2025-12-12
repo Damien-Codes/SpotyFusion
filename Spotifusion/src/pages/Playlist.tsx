@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SideBar from "../components/sidebar/SideBar";
 import PlaylistMenu from "../components/PlaylistMenu";
-import { getValidAccessToken, isAuthenticated } from "../service/spotifyAuth";
+import { getValidAccessToken, isAuthenticated } from "../service/SpotifyAuth";
 import "./Dashboard.css";
 
 const Playlist: React.FC = () => {

@@ -8,11 +8,11 @@ import {
   Save,
   Activity,
 } from "lucide-react";
-import { searchSpotify, getRecommendations } from "../app/api/SpotifyApi";
+import { searchSpotify, getRecommendations } from "../service/SpotifyApi";
 import type {
   RecommendationTrack,
   RecommendationError,
-} from "../app/api/SpotifyApi";
+} from "../service/SpotifyApi";
 import { SPOTIFY_GENRES } from "../constants/Spotifygenres";
 import "../assets/PlaylistMenu.css";
 

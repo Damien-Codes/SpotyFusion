@@ -1,4 +1,4 @@
-import type { Artist } from "../../app/api/SpotifyApi";
+import type { Artist } from "../../service/SpotifyApi";
 import { UserIcon } from "../icons/Icons";
 import "./Cards.css";
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Play } from "lucide-react";
-import { getPlaylists, getPlaylistTracks } from "../app/api/SpotifyApi";
-import type { Playlist, PlaylistTrack } from "../app/api/SpotifyApi";
+import { getPlaylists, getPlaylistTracks } from "../service/SpotifyApi";
+import type { Playlist, PlaylistTrack } from "../service/SpotifyApi";
 import QuizGame from "./QuizGame";
 import QuizResults from "./QuizResults";
 import "../assets/BlindTestMenu.css";

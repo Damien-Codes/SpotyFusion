@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { X } from "lucide-react";
-import type { PlaylistTrack, Playlist } from "../app/api/SpotifyApi";
+import type { PlaylistTrack, Playlist } from "../service/SpotifyApi";
 import "../assets/QuizGame.css";
 
 interface QuizGameProps {

@@ -4,7 +4,7 @@ import {
   exchangeCodeForTokens,
   isAuthenticated,
   getStoredAccessToken,
-} from "../service/spotifyAuth";
+} from "../service/SpotifyAuth";
 
 const Callback: React.FC = () => {
   const navigate = useNavigate();

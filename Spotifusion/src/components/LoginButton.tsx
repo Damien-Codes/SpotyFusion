@@ -4,7 +4,7 @@ import {
   generateCodeVerifier,
   generateCodeChallenge,
   storeCodeVerifier,
-} from "../service/spotifyAuth";
+} from "../service/SpotifyAuth";
 
 async function handleLogin() {
   const codeVerifier = generateCodeVerifier();

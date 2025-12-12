@@ -1,4 +1,4 @@
-import type { RecentlyPlayedTrack } from "../../app/api/SpotifyApi";
+import type { RecentlyPlayedTrack } from "../../service/SpotifyApi";
 import { MusicIcon, ClockIcon } from "../icons/Icons";
 import { getTimeAgo } from "../../utils/timeAgo";
 import "./Cards.css";
