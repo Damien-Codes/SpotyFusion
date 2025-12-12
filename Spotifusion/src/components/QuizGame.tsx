@@ -227,10 +227,7 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
       if (embedControllerRef.current) {
         embedControllerRef.current.pause();
       }
-      onGameEnd(
-        selectedAnswer === currentQ.correctTrack.id ? score + 1 : score,
-        newPlayedTracks,
-      );
+      onGameEnd(score, newPlayedTracks);
       return;
     }
 
@@ -243,7 +240,6 @@ const QuizGame = ({ playlist, tracks, onClose, onGameEnd }: QuizGameProps) => {
     currentQuestion,
     questions,
     playedTracks,
-    selectedAnswer,
     score,
     onGameEnd,
   ]);
